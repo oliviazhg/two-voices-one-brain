@@ -126,8 +126,11 @@ triage_agent = Agent(
 )
 
 async def main():
-    result = await Runner.run(triage_agent, "Should I go to the club?")
-    print(result.final_output)
+    angel_result = await Runner.run(angel_agent, "Should I go to the club?")
+    devil_result = await Runner.run(devil_agent, "Should I go to the club?")
+    
+    print(angel_result.final_output)
+    print(devil_result.final_output)
 
     # result = await Runner.run(triage_agent, "what is life")
     # print(result.final_output)
