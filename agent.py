@@ -56,15 +56,57 @@ triage_agent = Agent(
     ],
 )
 
+def filter_title_timestamp(data_list):
+    """
+    Given a list of dictionaries, return a new list containing only the 'title' and 'timestamp' keys.
+    
+    Args:
+        data_list (list): List of dictionaries.
+
+    Returns:
+        list: New list of dictionaries with only 'title' and 'timestamp' keys.
+    """
+    filtered_list = []
+    for item in data_list:
+        filtered_item = {
+            'title': item.get('title'),
+            'timestamp': item.get('timestamp')
+        }
+        filtered_list.append(filtered_item)
+    return filtered_list
+
+# Example usage:
+# input_data = [
+#     {'title': 'Post 1', 'timestamp': '2025-06-21', 'author': 'Alice'},
+#     {'title': 'Post 2', 'timestamp': '2025-06-20', 'content': 'Hello world'},
+#     {'title': 'Post 3', 'timestamp': '2025-06-19', 'views': 100}
+# ]
+
+# output_data = filter_title_timestamp(input_data)
+# print(output_data)
+
 async def main():
     # Get user data
     history = extract_chrome_history() # Get browser history
+    output = filter_title_timestamp(history)
+    
+    # Prompt the user for their question
+    user_question = input("What is your question you would like to ask the angel and devil? ")
 
-    angel_result = await Runner.run(angel_agent, "Should I go to the club?")
-    devil_result = await Runner.run(devil_agent, "Should I go to the club?")
+    # Combine the file content with your question
+    input_text = (
+        "Here is my browser history:\n\n"
+        f"{output}\n\n"
+        f"{user_question}"
+    )
+    angel_result = await Runner.run(angel_agent, input_text)
+    devil_result = await Runner.run(devil_agent, input_text)
     
     print(angel_result.final_output)
     print(devil_result.final_output)
 
 if __name__ == "__main__":
     asyncio.run(main())
+    # history = extract_chrome_history()
+    # output = filter_title_timestamp(history)
+    # print(f'{output=}')
