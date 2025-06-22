@@ -1,0 +1,12 @@
+# iMessage
+imessage-reader
+
+# Gmail
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+google-auth
+
+# Supabase
+supabase
+python-dotenv

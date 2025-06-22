@@ -2,6 +2,28 @@ import streamlit as st
 import shelve
 import asyncio
 from agents import Agent, Runner
+import os
+import openai
+from dotenv import load_dotenv
+import sys
+
+# import OpenAI key
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# get path for browser history extraction code
+sys.path.append(os.path.abspath("digital-self-toolkit-copy"))
+from browser_history import browser_history
+
+# extract browser history
+history_entries = browser_history.save_browser_history()
+if history_entries:
+    recent_history = history_entries[:200]  # take top 5 recent entries
+    browser_context = "Recent browser history includes:\n" + "\n".join(
+        [f"- {entry['title'] or entry['url']}" for entry in recent_history]
+    )
+else:
+    browser_context = "Recent browser history not available."
 
 # --- Setup agents ---
 angel_agent = Agent(
@@ -58,12 +80,6 @@ if user_input := st.chat_input("Ask your question..."):
         st.markdown(user_input)
 
     # Construct prompt
-    browser_context = """
-    Recent browser history includes:
-    - Reddit: AITA
-    - NYT: Ethics in AI
-    - YouTube: Rickroll
-    """
     full_input = f"{browser_context}\n\nQuestion: {user_input}"
 
     # Async function to get responses
