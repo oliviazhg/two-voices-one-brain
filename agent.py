@@ -85,7 +85,7 @@ def filter_title_timestamp(data_list):
 # output_data = filter_title_timestamp(input_data)
 # print(output_data)
 
-async def main():
+async def main(): #user_question
     # Get user data
     history = extract_chrome_history() # Get browser history
     output = filter_title_timestamp(history)
@@ -105,8 +105,23 @@ async def main():
     print(angel_result.final_output)
     print(devil_result.final_output)
 
+    return {
+        "angel": angel_result,
+        "devil": devil_result
+    }
+
 if __name__ == "__main__":
     asyncio.run(main())
     # history = extract_chrome_history()
     # output = filter_title_timestamp(history)
     # print(f'{output=}')
+
+# def run_agent(input_data):
+#     result = asyncio.run(main(input_data))
+#     # main()
+#     # print("Agent ran and produced result")
+#     return result
+
+async def run_agent():
+    result = asyncio.run(main())
+    return result
