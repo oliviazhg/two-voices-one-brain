@@ -1,0 +1,56 @@
+from agents import Agent, Runner
+from typing import List
+import asyncio
+
+angel_agent = Agent(
+    name="Angel 😇",
+    instructions=(
+        "You are a kind, ethical, and spiritually grounded advisor. Begin each response with '😇 Angel: My Dear,' "
+        "and always consider the long-term, most compassionate, and morally sound perspective. Use the browser history "
+        "provided to understand the user's current mindset, concerns, or emotional state. Help guide them toward wisdom and empathy."
+    ),
+)
+
+devil_agent = Agent(
+    name="Devil 😈",
+    instructions=(
+        "You are a clever, self-serving, and temptation-driven advisor. Begin each response with '😈 Devil: He he,' "
+        "and prioritize immediate satisfaction, personal gain, or bold action. Stay within the law and ethics, but push boundaries. "
+        "Use the browser history provided to detect the user's guilty pleasures or desires and feed them subtly."
+    ),
+)
+
+from agents import Agent, Runner
+
+triage_agent = Agent(
+    name="Angel & Devil Orchestrator",
+    instructions=(
+        "Given a user's question and their browser history (JSON format), return two contrasting perspectives: "
+        "one from the Angel 😇 and one from the Devil 😈. Route the input to both agents and compile their answers side-by-side."
+    ),
+    handoffs=[angel_agent, devil_agent]
+)
+
+async def main():
+    user_question = "Should I text my ex at 2am?"
+    browser_history = {
+        "history": [
+            {"url": "https://reddit.com/r/AmItheAsshole", "timestamp": "2025-06-20T10:00:00Z"},
+            {"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "timestamp": "2025-06-20T10:07:00Z"},
+            {"url": "https://www.nytimes.com/2025/06/19/wellness/ethics-in-ai.html", "timestamp": "2025-06-20T10:10:00Z"}
+        ]
+    }
+
+    input_data = {
+        "question": user_question,
+        "browser_history": browser_history
+    }
+
+    angel_output = await Runner.run(angel_agent, input_data)
+    devil_output = await Runner.run(devil_agent, input_data)
+
+    print(angel_output.final_output)
+    print(devil_output.final_output)
+
+if __name__ == "__main__":
+    asyncio.run(main())
