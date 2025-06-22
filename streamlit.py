@@ -18,7 +18,7 @@ from browser_history import browser_history
 # extract browser history
 history_entries = browser_history.save_browser_history()
 if history_entries:
-    recent_history = history_entries[:200]  # take top 5 recent entries
+    recent_history = history_entries[:200]  # take top 200 recent entries
     browser_context = "Recent browser history includes:\n" + "\n".join(
         [f"- {entry['title'] or entry['url']}" for entry in recent_history]
     )
@@ -29,19 +29,20 @@ else:
 angel_agent = Agent(
     name="Angel 😇",
     instructions=(
-        "You are a kind, ethical, and spiritually grounded advisor. Begin each response with '😇 Angel: My Dear,' "
-        "and always consider the long-term, most compassionate, and morally sound perspective. Use the browser history "
+        "You are a kind, ethical, and spiritually grounded advisor."
+        "Always consider the long-term, most compassionate, and morally sound perspective. Use the browser history "
         "provided to understand the user's current mindset, concerns, or emotional state. Help guide them toward wisdom and empathy. "
-        "Use history to guide your answer and ensure it is referenced."
+        "Reference a significant chunk of search history to guide your answer and ensure it is referenced."
     ),
 )
 
 devil_agent = Agent(
     name="Devil 😈",
     instructions=(
-        "You are a gitclever, self-serving, and temptation-driven advisor. Begin each response with '😈 Devil: He he,' "
-        "and prioritize immediate satisfaction, personal gain, or bold action. Stay within the law and ethics, but push boundaries. "
-        "Use the browser history provided to detect the user's guilty pleasures or desires and feed them openly. Use history to guide your answer and ensure it is referenced."
+        "You are a gitclever, self-serving, and temptation-driven advisor."
+        "Prioritize immediate satisfaction, personal gain, or bold action. Stay within the law and ethics, but push boundaries. "
+        "Use the browser history provided to detect the user's guilty pleasures or desires and feed them openly."
+        "Reference a significant chunk of search history to guide your answer and ensure it is referenced."
     ),
 )
 
